@@ -1,33 +1,32 @@
-/* eslint-disable react/prop-types */
-import { MdDeleteSweep } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import { useDispatch } from "react-redux";
 import { remove } from "../redux/slices/cartslice";
 import toast from "react-hot-toast";
 
+const CartItem = ({ item }) => {
+    const dispatch = useDispatch();
 
-const CartItem = ( {item, itemIndex} ) => {
-    const dispatch=useDispatch()
     const removeFromCart = () => {
-        dispatch(remove(item.id))
-        toast.error("removed successfully")
+        dispatch(remove(item.id));
+        toast.error("Removed successfully");
+    };
 
-    }
     return (
-        <>
-            {/* Move the heading inside the loop if you want it for each CartItem */}
-            {/* <h1>Cart</h1> */}
-            <div>
-                <img src={item.image} alt="" />
+        <div className="flex border-b border-gray-200 py-4 px-6 items-center">
+            <div className="w-1/5">
+                <img src={item.image} alt={item.title} className="w-full" />
             </div>
-            <div>
-                <h1>{item.title}</h1>
-                <h1>{item.description}</h1>
-                <p>{item.price}</p>
-                <div onClick={removeFromCart}>
-                    <MdDeleteSweep />
+            <div className="flex flex-col justify-between ml-4 flex-grow">
+                <div>
+                    <h1 className="text-lg font-semibold mb-2">{item.title}</h1>
+                    <p className="text-sm text-gray-600 mb-2">{item.description}</p>
+                    <p className="text-lg text-gray-900">${item.price}</p>
+                </div>
+                <div className="text-lg cursor-pointer mt-2 text-red-700" onClick={removeFromCart}>
+                    <MdDelete className="text-lg" />
                 </div>
             </div>
-        </>
+        </div>
     );
 };
 

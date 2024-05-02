@@ -7,14 +7,14 @@ export const Home = () => {
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
 
-  const fetchProduct = async () => {
+  const fetchProducts = async () => {
     setLoading(true);
     try {
       const res = await fetch(API_URL);
       const data = await res.json();
       setPosts(data);
-    } catch (e) {
-      console.log("error", e);
+    } catch (error) {
+      console.error("Error fetching products:", error);
       setPosts([]);
     } finally {
       setLoading(false);
@@ -22,21 +22,20 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    fetchProduct();
+    fetchProducts();
   }, []);
 
   return (
     <div className="container mx-auto p-4">
       <h1 className="text-3xl font-bold mb-4">Featured Products</h1>
-      <div className="grid xs:grid-col1 sm:grid-col-2 md:grid-col-3 lg:grid-cols-4 max-w-6xl p-2 mx-auto space-y-10 space-x-5  ">
-        {loading ? <Spinner /> : null}
-        {posts.length > 0 ? (
-          posts.map((post) => (
-            <Product key={post.id} post={post} />
-          ))
-        ) : (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {loading && <Spinner />}
+        {!loading && posts.length === 0 && (
           <p className="text-red-500">No products available</p>
         )}
+        {posts.map((post) => (
+          <Product key={post.id} post={post} />
+        ))}
       </div>
     </div>
   );
